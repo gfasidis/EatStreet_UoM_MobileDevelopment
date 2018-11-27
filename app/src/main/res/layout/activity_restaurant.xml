@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadeScrollbars="true"
+    android:isScrollContainer="true"
+    android:nestedScrollingEnabled="true"
+    android:overScrollMode="always"
+    android:scrollIndicators="top|bottom|left|right|start|end"
+    android:scrollbars="vertical"
+    android:verticalScrollbarPosition="right"
+    tools:context="gr.ifasman7.uomandroid.restaurantsworldwideguide.RestaurantActivity">
+
+    <FrameLayout
+        android:id="@+id/fragmentLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoBtn">
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/removeFav"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/Remove_Fav_Res"
+        android:textAlignment="center"
+        android:textColor="@color/buttonColor"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/resImage"
+        app:layout_constraintTop_toBottomOf="@+id/resNametxt" />
+
+    <Button
+        android:id="@+id/menuInfo"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/menu_btn"
+        android:textAlignment="center"
+        android:textColor="@color/buttonColor"
+        app:layout_constraintBaseline_toBaselineOf="@+id/infoBtn"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/resImage"
+        android:layout_width="143dp"
+        android:layout_height="141dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/Res_logo_Desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/side_nav_bar" />
+
+    <Button
+        android:id="@+id/openMapsbtn"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="172dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:text="@string/Open_in_Maps"
+        android:textAlignment="center"
+        android:textColor="@color/buttonColor"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toEndOf="@+id/resImage"
+        app:layout_constraintTop_toBottomOf="@+id/addToFavbtn" />
+
+    <Button
+        android:id="@+id/infoBtn"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/Res_info_btn"
+        android:textAlignment="center"
+        android:textColor="@color/buttonColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resImage" />
+
+    <Button
+        android:id="@+id/addToFavbtn"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="172dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/Add_To_Fav"
+        android:textAlignment="center"
+        android:textColor="@color/buttonColor"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/resImage"
+        app:layout_constraintTop_toBottomOf="@+id/resNametxt" />
+
+    <TextView
+        android:id="@+id/resNametxt"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:autoSizeTextType="uniform"
+        android:text="@string/Res_Name"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/resImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">EatStreet</string>
+    <string name="nearby_res">Nearby Restaurants</string>
+    <string name="info_page">Η παρούσα εφαρμογή δημιουργήθηκε στο πλαίσιο του μαθήματος \"Ανάπτυξη Εφαρμογών για Κινητές Συσκευές\"! Έχει γίνει χρήση του EatStret API γι αυτό και το αντίστοιχο όνομα της εφαρφμογής. Σε καμία περίπτωση δεν καλύπτει πλήρως τις λειτουργίες της κανονικής EatStreet εφαρμογής.
+    \nΣτοιχεία Φοιτητή:\nΓεώργιος Φασίδης\ndai16020</string>
+    <string name="support_email">dai16020@uom.edu.gr</string>
+    <string name="support_button">Support</string>
+    <string name="pamak_photo_description">UoM Logo for Info page</string>
+    <string name="cont_home_screene">Continue in Home Screen</string>
+    <string name="message_to_loggedin_user">WELCOME BACK</string>
+    <string name="login_BG_description">Background image for Login Activity</string>
+    <string name="info_btn_description">InfoActivity Button</string>
+
+    <!--->
+        Restaurant Activity
+    <!-->
+    <string name="Monday">Monday:</string>
+    <string name="Tuesday">Tuesday:</string>
+    <string name="Wednesday">Wednesday:</string>
+    <string name="Thursday">Thursday:</string>
+    <string name="Friday">Friday:</string>
+    <string name="Saturday">Saturday:</string>
+    <string name="Sunday">Sunday:</string>
+    <string name="Hours">Hours</string>
+    <string name="Res_logo_Desc">Restaurant Logo</string>
+    <string name="Res_Hours">Restaurant Hours</string>
+    <string name="Res_Food_Types">Restaurant Food Types</string>
+    <string name="Food_Types">Food Types</string>
+    <string name="Res_Info">Restaurant Info</string>
+    <string name="Yes_No">Yes/No</string>
+    <string name="Res_Address">Restaurant Address</string>
+    <string name="Phone_Call_Button">CALL</string>
+    <string name="WebSite_Button">WEBSITE</string>
+    <string name="Res_Name">Restaurant Name</string>
+    <string name="Open_in_Maps">OPEN IN MAPS</string>
+    <string name="Add_To_Fav">ADD TO FAVORITES</string>
+    <string name="Remove_Fav_Res">REMOVE FROM FAVORITES</string>
+    <string name="Res_Accept_Cash">Accept Cash:</string>
+    <string name="Res_Accept_Card">Accept Card:</string>
+    <string name="Res_Offers_Delivery">Delivery Option:</string>
+    <string name="Res_Offers_PickUp">Pickup Option:</string>
+    <string name="Res_Waiting_Time">Waiting Time:</string>
+    <string name="title_activity_nearby_restaurant">NearbyRestaurantActivity</string>
+    <string name="Res_info_btn">Restaurant Info</string>
+    <string name="menu_btn">Restaurant Menu</string>
+
+    <!--->
+        Side menu tab Activity
+    <!-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="FB_logout">Logout</string>
+    <string name="Fav_Res">Favorite Restaurants</string>
+    <string name="Action_menu">Actions</string>
+
+    <string name="FB_Profile_Photo">User\'s FaceBook Profile Photo</string>
+    <string name="FB_Profile_Name">User\'s FaceBook Profile Name</string>
+    <string name="FB_Profile_id">User\'s FaceBook Profile iD</string>
+
+    <!--->
+        Restaurant Menu List
+    <!-->
+    <string name="Item_name">Menu Item Name</string>
+    <string name="Item_desc">Menu Item Description</string>
+    <string name="Item_price">$$$$</string>
+    <string name="price">Price ($)</string>
+
+
+</resources>

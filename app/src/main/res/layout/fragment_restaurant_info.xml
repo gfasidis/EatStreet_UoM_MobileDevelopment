@@ -1,0 +1,427 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="gr.ifasman7.uomandroid.restaurantsworldwideguide.RestaurantInfoFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/restaurant_background">
+
+
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fadeScrollbars="true"
+            android:isScrollContainer="true"
+            android:nestedScrollingEnabled="true"
+            android:overScrollMode="always"
+            android:scrollIndicators="top|bottom|left|right|start|end"
+            android:scrollbars="vertical"
+            android:verticalScrollbarPosition="right"
+            tools:context="gr.ifasman7.uomandroid.restaurantsworldwideguide.RestaurantActivity">
+
+            <Button
+                android:id="@+id/resURLbtn"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/WebSite_Button"
+                android:textColor="@color/buttonColor"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resFullAddresstxt" />
+
+            <TextView
+                android:id="@+id/resInfoStatic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="3dp"
+                android:text="@string/Res_Info"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/resFullAddresstxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/Res_Address"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resInfoStatic" />
+
+            <TextView
+                android:id="@+id/resCashStatic"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/Res_Accept_Cash"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resPhonebtn" />
+
+            <TextView
+                android:id="@+id/resCardStatic"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/Res_Accept_Card"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resCashStatic" />
+
+            <TextView
+                android:id="@+id/resDeliveryStatic"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/Res_Offers_Delivery"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resCardStatic" />
+
+            <TextView
+                android:id="@+id/resPickUpStatic"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/Res_Offers_PickUp"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resDeliveryStatic" />
+
+            <TextView
+                android:id="@+id/resWaitingTimeStatic"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/Res_Waiting_Time"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resPickUpStatic" />
+
+            <TextView
+                android:id="@+id/resHoursStatic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/Res_Hours"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resWaitingTimeStatic" />
+
+            <TextView
+                android:id="@+id/resMondayStatic"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/Monday"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resHoursStatic" />
+
+            <TextView
+                android:id="@+id/resTuesdayStatic"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/Tuesday"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resMondayStatic" />
+
+            <TextView
+                android:id="@+id/resWednesdayStatic"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/Wednesday"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resTuesdayStatic" />
+
+            <TextView
+                android:id="@+id/resSaturdayStatic"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/Saturday"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resFridayStatic" />
+
+            <TextView
+                android:id="@+id/resFridayStatic"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/Friday"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resThursdayStatic" />
+
+            <TextView
+                android:id="@+id/resSundayStatic"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/Sunday"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resSaturdayStatic" />
+
+            <TextView
+                android:id="@+id/resThursdayStatic"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/Thursday"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resWednesdayStatic" />
+
+            <TextView
+                android:id="@+id/resFoodTypesStatic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/Res_Food_Types"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resSundayStatic" />
+
+            <TextView
+                android:id="@+id/resFoodstxt"
+                android:layout_width="391dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:autoSizeTextType="uniform"
+                android:text="@string/Food_Types"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resFoodTypesStatic" />
+
+            <Button
+                android:id="@+id/resPhonebtn"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="61dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="5dp"
+                android:text="@string/Phone_Call_Button"
+                android:textColor="@color/buttonColor"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resURLbtn" />
+
+            <TextView
+                android:id="@+id/resMondaytxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/Hours"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/resMondayStatic"
+                app:layout_constraintStart_toEndOf="@+id/resMondayStatic" />
+
+            <TextView
+                android:id="@+id/resTuesdaytxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/Hours"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/resTuesdayStatic"
+                app:layout_constraintStart_toEndOf="@+id/resTuesdayStatic" />
+
+            <TextView
+                android:id="@+id/resWednesdaytxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/Hours"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/resWednesdayStatic"
+                app:layout_constraintStart_toEndOf="@+id/resWednesdayStatic" />
+
+            <TextView
+                android:id="@+id/resSaturdaytxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/Hours"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/resSaturdayStatic"
+                app:layout_constraintStart_toEndOf="@+id/resSaturdayStatic" />
+
+            <TextView
+                android:id="@+id/resThursdaytxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/Hours"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/resThursdayStatic"
+                app:layout_constraintStart_toEndOf="@+id/resThursdayStatic" />
+
+            <TextView
+                android:id="@+id/resFridaytxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/Hours"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/resFridayStatic"
+                app:layout_constraintStart_toEndOf="@+id/resFridayStatic" />
+
+            <TextView
+                android:id="@+id/resSundaytxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/Hours"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/resSundayStatic"
+                app:layout_constraintStart_toEndOf="@+id/resSundayStatic" />
+
+            <TextView
+                android:id="@+id/resCashtxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/Yes_No"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/resCashStatic"
+                app:layout_constraintStart_toEndOf="@+id/resCashStatic" />
+
+            <TextView
+                android:id="@+id/resCardtxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/Yes_No"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/resCardStatic"
+                app:layout_constraintStart_toEndOf="@+id/resCardStatic" />
+
+            <TextView
+                android:id="@+id/resDeliverytxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/Yes_No"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/resDeliveryStatic"
+                app:layout_constraintStart_toEndOf="@+id/resDeliveryStatic" />
+
+            <TextView
+                android:id="@+id/resPickUptxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/Yes_No"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/resPickUpStatic"
+                app:layout_constraintStart_toEndOf="@+id/resPickUpStatic" />
+
+            <TextView
+                android:id="@+id/resWaitingTimetxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/Yes_No"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/resWaitingTimeStatic"
+                app:layout_constraintStart_toEndOf="@+id/resWaitingTimeStatic" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+</FrameLayout>
