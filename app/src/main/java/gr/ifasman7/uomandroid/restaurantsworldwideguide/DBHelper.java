@@ -70,7 +70,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "\t" + RES_RES_LATITUDE + "\tREAL NOT NULL,\n" +
                 "\t" + RES_RES_LONGITUDE + "\tREAL NOT NULL,\n" +
                 "\t" + RES_RES_STATE + "\tTEXT NOT NULL,\n" +
-                "\t" + RES_RES_ZIP + "tTEXT NOT NULL,\n" +
+                "\t" + RES_RES_ZIP + "\tTEXT NOT NULL,\n" +
                 "\t" + RES_RES_PHONE + "\tTEXT NOT NULL,\n" +
                 "\t" + RES_RES_ACCEPT_CASH + "\tTEXT NOT NULL,\n" +
                 "\t" + RES_RES_ACCEPT_CARD + "\tTEXT NOT NULL,\n" +
@@ -111,7 +111,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.delete(FAV_RES_TABLE_NAME, whereQuery, new String[] {userID, resID});
     }
 
-    public void insertRestaurant (Restaurant restaurant){
+    public Boolean insertRestaurant (Restaurant restaurant){
 
         if(!isRestaurantInDataBase(restaurant)){
             SQLiteDatabase db = this.getWritableDatabase();
@@ -142,10 +142,13 @@ public class DBHelper extends SQLiteOpenHelper {
             resValues.put(RES_HOURS_SATURDAY, restaurant.getRes_hours().get("Saturday"));
             resValues.put(RES_HOURS_SUNDAY, restaurant.getRes_hours().get("Sunday"));
             db.insert(RES_TABLE_NAME, null, resValues);
+            Log.d(TAG, "insertRestaurant: Restaurant " + restaurant.getRes_id() + " " + restaurant.getRes_name() + " added to DB");
+            return true;
         }
-        else
+        else {
             Log.d(TAG, "insertRestaurant: Restaurant " + restaurant.getRes_id() + " " + restaurant.getRes_name() + " is already in DB");
-
+            return true;
+        }
 
     }
 

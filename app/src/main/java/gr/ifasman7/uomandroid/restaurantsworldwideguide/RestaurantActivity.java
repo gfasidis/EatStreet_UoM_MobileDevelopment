@@ -147,12 +147,13 @@ public class RestaurantActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DBHelper db = new DBHelper(RestaurantActivity.this);
-                db.insertRestaurant(thisRestaurant);
-                db.addRestaurantToUser(AccessToken.getCurrentAccessToken().getUserId(),thisRestaurant);
-                Toast.makeText(RestaurantActivity.this,"Added to favorites",Toast.LENGTH_SHORT).show();
-                db.close();
-                addToFavsbtn.setVisibility(View.INVISIBLE);
-                removeFromFavsbtn.setVisibility(View.VISIBLE);
+                if(db.insertRestaurant(thisRestaurant)){
+                    db.addRestaurantToUser(AccessToken.getCurrentAccessToken().getUserId(),thisRestaurant);
+                    Toast.makeText(RestaurantActivity.this,"Added to favorites",Toast.LENGTH_SHORT).show();
+                    db.close();
+                    addToFavsbtn.setVisibility(View.INVISIBLE);
+                    removeFromFavsbtn.setVisibility(View.VISIBLE);
+                }
             }
         });
 
