@@ -8,9 +8,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by ifasman7 on 07/11/2018.
- */
 
 public class JSONMenuParser {
 

@@ -1,9 +1,5 @@
 package gr.ifasman7.uomandroid.restaurantsworldwideguide;
 
-/**
- * Created by ifasman7 on 07/11/2018.
- */
-
 public class RestaurantMenuItem {
 
     private String itemName;

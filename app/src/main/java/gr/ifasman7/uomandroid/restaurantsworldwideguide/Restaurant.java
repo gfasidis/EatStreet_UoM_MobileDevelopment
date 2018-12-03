@@ -1,13 +1,8 @@
 package gr.ifasman7.uomandroid.restaurantsworldwideguide;
 
-import android.graphics.drawable.Drawable;
-
 import java.util.ArrayList;
 import java.util.Map;
 
-/**
- * Created by ifasman7 on 31/10/2018.
- */
 
 public class Restaurant {
     private static final String TAG = "iFasMan";

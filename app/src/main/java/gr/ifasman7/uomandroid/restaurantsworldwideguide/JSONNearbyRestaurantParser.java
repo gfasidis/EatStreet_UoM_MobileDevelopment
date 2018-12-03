@@ -10,40 +10,37 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by ifasman7 on 31/10/2018.
- */
 
 public class JSONNearbyRestaurantParser {
 
     private static final String TAG = "iFasMan";
 
-    public static final String RES_API_KEY = "apiKey";
-    public static final String RES_NAME = "name";
-    public static final String RES_URL = "url";
-    public static final String RES_ADDRESS = "streetAddress";
-    public static final String RES_CITY = "city";
-    public static final String RES_STATE = "state";
-    public static final String RES_ZIP = "zip";
-    public static final String RES_PHONE = "phone";
-    public static final String RES_LAT = "latitude";
-    public static final String RES_LONG = "longitude";
-    public static final String RES_ACCEPT_CASH = "acceptsCash";
-    public static final String RES_ACCEPT_CARD = "acceptsCard";
-    public static final String RES_LOGO_URL = "logoUrl";
-    public static final String RES_OFFERS_DELIVERY = "offersDelivery";
-    public static final String RES_OFFERS_PICKUP = "offersPickup";
-    public static final String RES_MIN_WAIT_TIME = "minWaitTime";
-    public static final String RES_MAX_WAIT_TIME = "maxWaitTime";
+    private static final String RES_API_KEY = "apiKey";
+    private static final String RES_NAME = "name";
+    private static final String RES_URL = "url";
+    private static final String RES_ADDRESS = "streetAddress";
+    private static final String RES_CITY = "city";
+    private static final String RES_STATE = "state";
+    private static final String RES_ZIP = "zip";
+    private static final String RES_PHONE = "phone";
+    private static final String RES_LAT = "latitude";
+    private static final String RES_LONG = "longitude";
+    private static final String RES_ACCEPT_CASH = "acceptsCash";
+    private static final String RES_ACCEPT_CARD = "acceptsCard";
+    private static final String RES_LOGO_URL = "logoUrl";
+    private static final String RES_OFFERS_DELIVERY = "offersDelivery";
+    private static final String RES_OFFERS_PICKUP = "offersPickup";
+    private static final String RES_MIN_WAIT_TIME = "minWaitTime";
+    private static final String RES_MAX_WAIT_TIME = "maxWaitTime";
 
-    public static final String RES_FOOD_TYPES = "foodTypes";
-    public static final String RES_HOURS = "hours";
+    private static final String RES_FOOD_TYPES = "foodTypes";
+    private static final String RES_HOURS = "hours";
 
 
     private ArrayList<Restaurant> restaurants;
 
     public JSONNearbyRestaurantParser(){
-        restaurants = new ArrayList<Restaurant>();
+        restaurants = new ArrayList<>();
     }
 
     public ArrayList<Restaurant> getRestaurants() {

@@ -1,19 +1,11 @@
 package gr.ifasman7.uomandroid.restaurantsworldwideguide;
 
-import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,8 +23,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -63,6 +53,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
     private Restaurant thisRestaurant;
     private int position;
+    private String prevActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +64,11 @@ public class RestaurantActivity extends AppCompatActivity {
 
         Intent thisIntent = getIntent();
         position = thisIntent.getIntExtra("position",0);
-        thisRestaurant = RestaurantAdapter.getFilteredRestaurants().get(position);
+        prevActivity = thisIntent.getStringExtra("activity");
+        if(prevActivity.equals("Nearby"))
+            thisRestaurant = RestaurantAdapter.getFilteredRestaurants().get(position);
+        else
+            thisRestaurant = FavoritesAdapter.getFilteredRestaurants().get(position);
 
         createLayout();
         fragmentManager = getSupportFragmentManager();
@@ -82,7 +77,7 @@ public class RestaurantActivity extends AppCompatActivity {
                 return;
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            putPositionToFragment(infoFragment,position);
+            putDataToFragment(infoFragment);
             fragmentTransaction.add(R.id.fragmentLayout,infoFragment,null);
             fragmentTransaction.commit();
         }
@@ -92,9 +87,10 @@ public class RestaurantActivity extends AppCompatActivity {
 
     }
 
-    private void putPositionToFragment(Fragment fragment, int pos){
+    private void putDataToFragment(Fragment fragment){
         Bundle bundle = new Bundle();
-        bundle.putInt("position",pos);
+        bundle.putInt("position",position);
+        bundle.putString("activity",prevActivity);
         fragment.setArguments(bundle);
     }
     public void createLayout(){
@@ -107,7 +103,7 @@ public class RestaurantActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: Info");
-                putPositionToFragment(infoFragment,position);
+                putDataToFragment(infoFragment);
                 fragmentManager.beginTransaction().replace(R.id.fragmentLayout,infoFragment,null).commit();
             }
         });
@@ -117,7 +113,7 @@ public class RestaurantActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: Menu");
-                putPositionToFragment(menuFragment,position);
+                putDataToFragment(menuFragment);
                 fragmentManager.beginTransaction().replace(R.id.fragmentLayout,menuFragment,null).commit();
             }
         });

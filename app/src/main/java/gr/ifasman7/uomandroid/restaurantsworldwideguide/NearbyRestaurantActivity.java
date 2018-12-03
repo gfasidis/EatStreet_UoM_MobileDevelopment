@@ -1,8 +1,6 @@
 package gr.ifasman7.uomandroid.restaurantsworldwideguide;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -26,8 +23,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -36,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
@@ -56,8 +50,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.CookieHandler;
-import java.net.CookiePolicy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -120,10 +112,14 @@ public class NearbyRestaurantActivity extends AppCompatActivity
          */
 
         nearbyRestaurantsListView = findViewById(R.id.nearbyResListView);
+        restaurants = new ArrayList<>();
 
         Log.d(TAG, "onCreate: Request Location Permission");
 
         compileLayout();
+        restaurantAdapter = new RestaurantAdapter(NearbyRestaurantActivity.this, R.layout.nearby_list_item, restaurants);
+        nearbyRestaurantsListView.setAdapter(restaurantAdapter);
+
 
 
     }
@@ -131,8 +127,8 @@ public class NearbyRestaurantActivity extends AppCompatActivity
     private void compileLayout() {
         checkLocationPermission();
         if (mLocationPermissionsGranted) {
-            getDeviceLocation();
             createLocationRequest();
+            getDeviceLocation();
         } else {
             Toast.makeText(NearbyRestaurantActivity.this, "Unable to get restaurants!", Toast.LENGTH_SHORT).show();
         }
@@ -145,6 +141,7 @@ public class NearbyRestaurantActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            Log.d(TAG, "onBackPressed: nothing happens");
             /*
                 Disable Back Button
              */
@@ -290,7 +287,9 @@ public class NearbyRestaurantActivity extends AppCompatActivity
                 }
             }
         };
+
         Log.d(TAG, "startLocationUpdates: Location request");
+        mFusedLocationProviderClient = new FusedLocationProviderClient(NearbyRestaurantActivity.this);
         mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback,null);
     }
 
@@ -365,9 +364,9 @@ public class NearbyRestaurantActivity extends AppCompatActivity
                     Log.d(TAG, "onRequestPermissionsResult: permission granted");
                     mLocationPermissionsGranted = true;
 
-                    getDeviceLocation();
                     createLocationRequest();
                     startLocationUpdates();
+                    getDeviceLocation();
                 }
             }
         }
@@ -379,17 +378,30 @@ public class NearbyRestaurantActivity extends AppCompatActivity
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try{
             if(mLocationPermissionsGranted){
-                Task location = mFusedLocationProviderClient.getLastLocation();
+                final Task location = mFusedLocationProviderClient.getLastLocation();
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Log.d(TAG, "onComplete: Found location!");
-
                             currentLocation = (Location) task.getResult();
-                            downloadDataViaLocation(currentLocation);
+                            if (currentLocation != null) {
+                                Log.d(TAG, "onComplete: current location != null");
+                                downloadDataViaLocation(currentLocation);
+                            } else {
+                                /*
+                                    Fused Location Provider Only Works AFTER maps or something like that open previously
+                                    Added this to avoid crashing with null pointer exception in AVD
+                                 */
+                                Log.d(TAG, "onComplete: current location = null");
+                                Location defaultLocation = new Location("");
+                                defaultLocation.setLatitude(0.1);
+                                defaultLocation.setLongitude(0.1);
+                                currentLocation = defaultLocation;
+                                downloadDataViaLocation(currentLocation);
+                            }
 
-                        }else{
+                        } else {
                             Log.d(TAG, "onComplete: Current location is null");
                             Toast.makeText(NearbyRestaurantActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
                         }
@@ -400,8 +412,6 @@ public class NearbyRestaurantActivity extends AppCompatActivity
             Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage() );
         }
     }
-
-
 
     /*
         Calling AsyncTask classes
@@ -445,6 +455,7 @@ public class NearbyRestaurantActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(String jsonData) {
             super.onPostExecute(jsonData);
+            restaurantAdapter.clear();
 
             JSONNearbyRestaurantParser parser = new JSONNearbyRestaurantParser();
             if (parser.parse(jsonData)){
@@ -454,15 +465,13 @@ public class NearbyRestaurantActivity extends AppCompatActivity
                     Log.d(TAG, restaurants.get(i).toString());
                     Log.d(TAG, "----------------------------------------------------------------------------------");
                 }
-
-                restaurantAdapter = new RestaurantAdapter(NearbyRestaurantActivity.this, R.layout.nearby_list_item, restaurants);
-                restaurantAdapter.notifyDataSetChanged();
-                nearbyRestaurantsListView.setAdapter(restaurantAdapter);
+                restaurantAdapter.refreshRestaurants(restaurants);
                 nearbyRestaurantsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent restaurantActivity = new Intent(NearbyRestaurantActivity.this, RestaurantActivity.class);
                         restaurantActivity.putExtra("position",position);
+                        restaurantActivity.putExtra("activity","Nearby");
                         startActivity(restaurantActivity);
                     }
                 });

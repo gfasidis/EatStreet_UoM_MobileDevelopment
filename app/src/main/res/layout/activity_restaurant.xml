@@ -29,7 +29,7 @@
     <Button
         android:id="@+id/removeFav"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="220dp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
@@ -37,7 +37,7 @@
         android:text="@string/Remove_Fav_Res"
         android:textAlignment="center"
         android:textColor="@color/buttonColor"
-        android:textSize="16sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/resImage"
         app:layout_constraintTop_toBottomOf="@+id/resNametxt" />
@@ -72,7 +72,7 @@
     <Button
         android:id="@+id/openMapsbtn"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="172dp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
@@ -102,7 +102,7 @@
     <Button
         android:id="@+id/addToFavbtn"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="172dp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
@@ -110,14 +110,14 @@
         android:text="@string/Add_To_Fav"
         android:textAlignment="center"
         android:textColor="@color/buttonColor"
-        android:textSize="16sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/resImage"
         app:layout_constraintTop_toBottomOf="@+id/resNametxt" />
 
     <TextView
         android:id="@+id/resNametxt"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"

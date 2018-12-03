@@ -1,7 +1,6 @@
 package gr.ifasman7.uomandroid.restaurantsworldwideguide;
 
-import android.content.Context;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -45,7 +44,12 @@ public class RestaurantMenuFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_restaurant_menu, container, false);
         int position = getArguments().getInt("position");
-        thisRestaurant = RestaurantAdapter.getFilteredRestaurants().get(position);
+        String prevActivity = getArguments().getString("activity");
+        if(prevActivity.equals("Nearby"))
+            thisRestaurant = RestaurantAdapter.getFilteredRestaurants().get(position);
+        else
+            thisRestaurant = FavoritesAdapter.getFilteredRestaurants().get(position);
+
         menu = new ArrayList<>();
         menu = thisRestaurant.getRes_menu();
 

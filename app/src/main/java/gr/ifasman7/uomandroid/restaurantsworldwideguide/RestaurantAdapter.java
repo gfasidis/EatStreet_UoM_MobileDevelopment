@@ -17,9 +17,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ifasman7 on 06/11/2018.
- */
 
 public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 
@@ -30,7 +27,6 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
     private List<Restaurant> nearbyRestaurants;
 
     private static List<Restaurant> filteredRestaurants;
-
 
     private Filter resFilter;
 
@@ -71,7 +67,7 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 
         viewHolder.resName.setText(restaurant.getRes_name());
         viewHolder.resAddress.setText(restaurant.getRes_address());
-        viewHolder.resFoodTypes.setText(restaurant.getRes_food_types() + "\n");
+        viewHolder.resFoodTypes.setText(restaurant.getRes_food_types());
         Picasso.get().load(restaurant.getRes_logo_url()).resize(80,80).centerCrop().into(viewHolder.resLogo);
 
         return convertView;
@@ -88,6 +84,13 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
             resFilter = new RestaurantNameFilter();
         }
         return resFilter;
+    }
+
+    public void refreshRestaurants(ArrayList<Restaurant> restaurants){
+        this.filteredRestaurants.clear();
+        this.filteredRestaurants.addAll(restaurants);
+        notifyDataSetChanged();
+
     }
 
     private class RestaurantNameFilter extends Filter {

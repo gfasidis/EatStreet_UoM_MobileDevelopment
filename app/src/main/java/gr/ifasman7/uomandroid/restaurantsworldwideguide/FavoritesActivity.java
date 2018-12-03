@@ -23,9 +23,10 @@ public class FavoritesActivity extends AppCompatActivity implements SearchView.O
 
     private static final String TAG = "iFasMan";
 
-    private RestaurantAdapter favoriteRestaurantAdapter;
+    private FavoritesAdapter favoriteRestaurantAdapter;
     private ListView favoriteRestaurantsListView;
     private SearchView searchBarTextView;
+    private ArrayList<Restaurant> favoriteRestaurants;
 
     private String userId;
 
@@ -36,6 +37,9 @@ public class FavoritesActivity extends AppCompatActivity implements SearchView.O
         setContentView(R.layout.activity_favorites);
 
         favoriteRestaurantsListView = findViewById(R.id.favResListView);
+        favoriteRestaurants = new ArrayList<>();
+        favoriteRestaurantAdapter = new FavoritesAdapter(FavoritesActivity.this, R.layout.nearby_list_item, favoriteRestaurants);
+        favoriteRestaurantsListView.setAdapter(favoriteRestaurantAdapter);
 
         userId = AccessToken.getCurrentAccessToken().getUserId();
         Log.d(TAG, "onCreate: userID = " + userId);
@@ -87,20 +91,20 @@ public class FavoritesActivity extends AppCompatActivity implements SearchView.O
         @Override
         protected void onPostExecute(ArrayList<Restaurant> restaurantArrayList) {
             super.onPostExecute(restaurantArrayList);
+            favoriteRestaurants = restaurantArrayList;
 
-            for (int i = 0; i < restaurantArrayList.size(); i++){
-                Log.d(TAG, restaurantArrayList.get(i).toString());
+            for (int i = 0; i < favoriteRestaurants.size(); i++){
+                Log.d(TAG, favoriteRestaurants.get(i).toString());
                 Log.d(TAG, "----------------------------------------------------------------------------------");
             }
 
-            favoriteRestaurantAdapter = new RestaurantAdapter(FavoritesActivity.this, R.layout.nearby_list_item, restaurantArrayList);
-            favoriteRestaurantAdapter.notifyDataSetChanged();
-            favoriteRestaurantsListView.setAdapter(favoriteRestaurantAdapter);
+            favoriteRestaurantAdapter.refreshRestaurants(favoriteRestaurants);
             favoriteRestaurantsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent restaurantActivity = new Intent(FavoritesActivity.this, RestaurantActivity.class);
                     restaurantActivity.putExtra("position",position);
+                    restaurantActivity.putExtra("activity","Favorites");
                     startActivity(restaurantActivity);
                 }
             });

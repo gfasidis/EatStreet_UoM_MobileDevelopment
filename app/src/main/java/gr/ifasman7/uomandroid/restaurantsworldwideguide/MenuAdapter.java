@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by ifasman7 on 27/11/2018.
- */
 
 public class MenuAdapter extends ArrayAdapter<RestaurantMenuItem> {
 

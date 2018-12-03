@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by ifasman7 on 13/11/2018.
- */
 
 public class DBHelper extends SQLiteOpenHelper {
 
