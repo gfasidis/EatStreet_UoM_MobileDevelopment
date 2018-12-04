@@ -62,6 +62,9 @@ public class RestaurantInfoFragment extends Fragment {
      */
     private TextView resFoodTypesTextView;
 
+    /*
+        Selected Restaurant
+    */
     private Restaurant thisRestaurant;
 
 
@@ -74,12 +77,7 @@ public class RestaurantInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_restaurant_info, container, false);
-        int position = getArguments().getInt("position");
-        String prevActivity = getArguments().getString("activity");
-        if(prevActivity.equals("Nearby"))
-            thisRestaurant = RestaurantAdapter.getFilteredRestaurants().get(position);
-        else
-            thisRestaurant = FavoritesAdapter.getFilteredRestaurants().get(position);
+        thisRestaurant = getArguments().getParcelable(RestaurantInfoFragment.this.getString(R.string.Passing_Restaurant));
 
         createLayout(view);
 
@@ -229,5 +227,4 @@ public class RestaurantInfoFragment extends Fragment {
                 break;
         }
     }
-
 }

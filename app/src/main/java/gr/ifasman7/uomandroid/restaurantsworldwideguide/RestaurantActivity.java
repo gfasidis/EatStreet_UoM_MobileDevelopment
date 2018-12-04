@@ -35,12 +35,11 @@ public class RestaurantActivity extends AppCompatActivity {
 
     private static FragmentManager fragmentManager;
 
-    private Button openMapsbtn;
-    private Button addToFavsbtn;
-    private Button removeFromFavsbtn;
+    private Button mapBtn;
+    private Button addToFavoritesBtn;
+    private Button removeFromFavoritesBtn;
     private TextView resNameTextView;
     private ImageView resLogoImageView;
-
 
     /*
         Restaurant Buttons Fragment
@@ -52,8 +51,6 @@ public class RestaurantActivity extends AppCompatActivity {
     private RestaurantMenuFragment menuFragment;
 
     private Restaurant thisRestaurant;
-    private int position;
-    private String prevActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +60,7 @@ public class RestaurantActivity extends AppCompatActivity {
         menuFragment = new RestaurantMenuFragment();
 
         Intent thisIntent = getIntent();
-        position = thisIntent.getIntExtra("position",0);
-        prevActivity = thisIntent.getStringExtra("activity");
-        if(prevActivity.equals("Nearby"))
-            thisRestaurant = RestaurantAdapter.getFilteredRestaurants().get(position);
-        else
-            thisRestaurant = FavoritesAdapter.getFilteredRestaurants().get(position);
+        thisRestaurant = thisIntent.getParcelableExtra(RestaurantActivity.this.getString(R.string.Passing_Restaurant));
 
         createLayout();
         fragmentManager = getSupportFragmentManager();
@@ -89,8 +81,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
     private void putDataToFragment(Fragment fragment){
         Bundle bundle = new Bundle();
-        bundle.putInt("position",position);
-        bundle.putString("activity",prevActivity);
+        bundle.putParcelable(RestaurantActivity.this.getString(R.string.Passing_Restaurant),thisRestaurant);
         fragment.setArguments(bundle);
     }
     public void createLayout(){
@@ -130,8 +121,8 @@ public class RestaurantActivity extends AppCompatActivity {
         /*
             Checking in DB
          */
-        addToFavsbtn = findViewById(R.id.addToFavbtn);
-        removeFromFavsbtn = findViewById(R.id.removeFav);
+        addToFavoritesBtn = findViewById(R.id.addToFavbtn);
+        removeFromFavoritesBtn = findViewById(R.id.removeFav);
 
         CheckInDataBase inDataBase = new CheckInDataBase();
         inDataBase.execute(AccessToken.getCurrentAccessToken().getUserId());
@@ -139,7 +130,7 @@ public class RestaurantActivity extends AppCompatActivity {
         /*
             Add to Favorites in Local DataBase
          */
-        addToFavsbtn.setOnClickListener(new View.OnClickListener() {
+        addToFavoritesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DBHelper db = new DBHelper(RestaurantActivity.this);
@@ -147,8 +138,8 @@ public class RestaurantActivity extends AppCompatActivity {
                     db.addRestaurantToUser(AccessToken.getCurrentAccessToken().getUserId(),thisRestaurant);
                     Toast.makeText(RestaurantActivity.this,"Added to favorites",Toast.LENGTH_SHORT).show();
                     db.close();
-                    addToFavsbtn.setVisibility(View.INVISIBLE);
-                    removeFromFavsbtn.setVisibility(View.VISIBLE);
+                    addToFavoritesBtn.setVisibility(View.INVISIBLE);
+                    removeFromFavoritesBtn.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -156,23 +147,23 @@ public class RestaurantActivity extends AppCompatActivity {
         /*
             Remove from Favorites in Local DataBase
          */
-        removeFromFavsbtn.setOnClickListener(new View.OnClickListener() {
+        removeFromFavoritesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DBHelper db = new DBHelper(RestaurantActivity.this);
                 db.removeFavRestaurant(AccessToken.getCurrentAccessToken().getUserId(),thisRestaurant.getRes_id());
                 Toast.makeText(RestaurantActivity.this, "Remove restaurant from favorites", Toast.LENGTH_SHORT).show();
                 db.close();
-                removeFromFavsbtn.setVisibility(View.INVISIBLE);
-                addToFavsbtn.setVisibility(View.VISIBLE);
+                removeFromFavoritesBtn.setVisibility(View.INVISIBLE);
+                addToFavoritesBtn.setVisibility(View.VISIBLE);
             }
         });
 
         /*
             Open in Maps with marker and restaurant's name
          */
-        openMapsbtn = findViewById(R.id.openMapsbtn);
-        openMapsbtn.setOnClickListener(new View.OnClickListener() {
+        mapBtn = findViewById(R.id.openMapsbtn);
+        mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent mapActivity = new Intent(Intent.ACTION_VIEW);
@@ -192,12 +183,12 @@ public class RestaurantActivity extends AppCompatActivity {
             super.onPostExecute(isFav);
 
             if(isFav){
-                addToFavsbtn.setVisibility(View.INVISIBLE);
-                removeFromFavsbtn.setVisibility(View.VISIBLE);
+                addToFavoritesBtn.setVisibility(View.INVISIBLE);
+                removeFromFavoritesBtn.setVisibility(View.VISIBLE);
             }
             else {
-                addToFavsbtn.setVisibility(View.VISIBLE);
-                removeFromFavsbtn.setVisibility(View.INVISIBLE);
+                addToFavoritesBtn.setVisibility(View.VISIBLE);
+                removeFromFavoritesBtn.setVisibility(View.INVISIBLE);
             }
         }
 
@@ -225,7 +216,6 @@ public class RestaurantActivity extends AppCompatActivity {
                     Log.d(TAG, thisRestaurant.getRes_menu().get(i).toString());
                     Log.d(TAG, "----------------------------------------------------------------------------------");
                 }
-
             }
             else{
                 Log.d(TAG, "onPostExecute: Error Parsing");
@@ -270,6 +260,5 @@ public class RestaurantActivity extends AppCompatActivity {
 
             return String.valueOf(sb);
         }
-
     }
 }

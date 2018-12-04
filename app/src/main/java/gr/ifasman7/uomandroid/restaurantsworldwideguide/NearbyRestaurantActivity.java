@@ -111,20 +111,27 @@ public class NearbyRestaurantActivity extends AppCompatActivity
             Don't Change Anything // End
          */
 
-        nearbyRestaurantsListView = findViewById(R.id.nearbyResListView);
         restaurants = new ArrayList<>();
-
-        Log.d(TAG, "onCreate: Request Location Permission");
-
-        compileLayout();
+        nearbyRestaurantsListView = findViewById(R.id.nearbyResListView);
         restaurantAdapter = new RestaurantAdapter(NearbyRestaurantActivity.this, R.layout.nearby_list_item, restaurants);
         nearbyRestaurantsListView.setAdapter(restaurantAdapter);
+        nearbyRestaurantsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent restaurantActivity = new Intent(NearbyRestaurantActivity.this, RestaurantActivity.class);
 
+                Restaurant selectedRestaurant = restaurantAdapter.getFilteredRestaurants().get(position);
+                restaurantActivity.putExtra(NearbyRestaurantActivity.this.getString(R.string.Passing_Restaurant),selectedRestaurant);
 
+                startActivity(restaurantActivity);
+            }
+        });
 
+        compileLayout();
     }
 
     private void compileLayout() {
+        Log.d(TAG, "compileLayout: Request Location Permission");
         checkLocationPermission();
         if (mLocationPermissionsGranted) {
             createLocationRequest();
@@ -466,21 +473,10 @@ public class NearbyRestaurantActivity extends AppCompatActivity
                     Log.d(TAG, "----------------------------------------------------------------------------------");
                 }
                 restaurantAdapter.refreshRestaurants(restaurants);
-                nearbyRestaurantsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent restaurantActivity = new Intent(NearbyRestaurantActivity.this, RestaurantActivity.class);
-                        restaurantActivity.putExtra("position",position);
-                        restaurantActivity.putExtra("activity","Nearby");
-                        startActivity(restaurantActivity);
-                    }
-                });
-
             }
             else{
                 Log.d(TAG, "onPostExecute: Error Parsing");
             }
-
         }
 
         @Override
@@ -527,7 +523,6 @@ public class NearbyRestaurantActivity extends AppCompatActivity
 
     private class DownloadFaceBookData extends AsyncTask {
 
-
         @Override
         protected Object doInBackground(Object[] objects) {
             final String USERS_NAME = "name";
@@ -564,9 +559,5 @@ public class NearbyRestaurantActivity extends AppCompatActivity
             request.executeAsync();
             return null;
         }
-
     }
-
-
-
 }

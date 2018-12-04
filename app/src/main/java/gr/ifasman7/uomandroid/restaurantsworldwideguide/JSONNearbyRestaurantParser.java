@@ -55,9 +55,7 @@ public class JSONNearbyRestaurantParser {
             restaurantJSON = new JSONObject(jsonData);
             JSONArray nearby_restaurants = restaurantJSON.getJSONArray("restaurants");
 
-            //Log.d(TAG, "parse: Length: " + nearby_restaurants.length());
             for (int i = 0; i < nearby_restaurants.length(); i++){
-                //Log.d(TAG, "parse: I am here, i = " + i);
 
                 JSONObject restaurant = nearby_restaurants.getJSONObject(i);
 
@@ -83,6 +81,7 @@ public class JSONNearbyRestaurantParser {
 
                 String res_min_wait_time = restaurant.getString(RES_MIN_WAIT_TIME);
                 String res_max_wait_time = restaurant.getString(RES_MAX_WAIT_TIME);
+                String res_waiting_time = res_min_wait_time + " - " + res_max_wait_time;
 
                 JSONObject hours = restaurant.getJSONObject(RES_HOURS);
                 Map<String,String> res_hours = new HashMap<>();
@@ -136,7 +135,8 @@ public class JSONNearbyRestaurantParser {
                     res_food_types.add(foodTypes.getString(x));
                 }
 
-                Restaurant aRestaurant = new Restaurant(res_id,res_name,res_url,res_logo_url,res_address,res_city,res_latitude,res_longtitude,res_state,res_zip,res_phone,res_accept_cash,res_accept_card,res_offers_delivery,res_offers_pickup,res_min_wait_time, res_max_wait_time,res_hours,foodTypesToString(res_food_types));
+                Restaurant aRestaurant = new Restaurant(res_id,res_name,res_url,res_logo_url,res_address,res_city,res_latitude,res_longtitude,res_state,res_zip,res_phone,res_waiting_time,
+                        res_accept_cash,res_accept_card,res_offers_delivery,res_offers_pickup,res_hours,foodTypesToString(res_food_types));
                 restaurants.add(aRestaurant);
             }
         } catch (JSONException e) {
@@ -157,10 +157,6 @@ public class JSONNearbyRestaurantParser {
                 foodTypes.append(", ");
             }
         }
-
-
         return foodTypes.toString();
     }
-
-
 }

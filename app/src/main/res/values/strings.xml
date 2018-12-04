@@ -68,5 +68,7 @@
     <string name="Item_price">$$$$</string>
     <string name="price">($)</string>
 
+    <string name="Passing_Restaurant">Restaurant</string>
+
 
 </resources>

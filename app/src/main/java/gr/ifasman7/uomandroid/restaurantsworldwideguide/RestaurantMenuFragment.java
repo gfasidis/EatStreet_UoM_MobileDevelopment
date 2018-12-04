@@ -43,13 +43,8 @@ public class RestaurantMenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_restaurant_menu, container, false);
-        int position = getArguments().getInt("position");
-        String prevActivity = getArguments().getString("activity");
-        if(prevActivity.equals("Nearby"))
-            thisRestaurant = RestaurantAdapter.getFilteredRestaurants().get(position);
-        else
-            thisRestaurant = FavoritesAdapter.getFilteredRestaurants().get(position);
 
+        thisRestaurant = getArguments().getParcelable(RestaurantMenuFragment.this.getString(R.string.Passing_Restaurant));
         menu = new ArrayList<>();
         menu = thisRestaurant.getRes_menu();
 
@@ -66,19 +61,18 @@ public class RestaurantMenuFragment extends Fragment {
         /*
             Categories Spinner
          */
-        categories = RestaurantMenu.getCategories(menu);
+        categories = RestaurantMenu.getCategoriesFromMenu(menu);
         Log.d(TAG, "onCreateView: " + categories.toString());
 
         spinnerAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,categories);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         menuSpinner.setAdapter(spinnerAdapter);
-
         menuSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String category = categories.get(position);
-                menuItems = RestaurantMenu.getItemsByCategory(category,menu);
+                menuItems = RestaurantMenu.getItemsFromCategory(category,menu);
 
                 menuAdapter = new MenuAdapter(getActivity(),R.layout.menu_list_item,menuItems);
                 menuListView.setAdapter(menuAdapter);

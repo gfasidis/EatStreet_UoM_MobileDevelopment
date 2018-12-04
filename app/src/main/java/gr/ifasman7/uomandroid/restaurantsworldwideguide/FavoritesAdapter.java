@@ -26,7 +26,7 @@ public class FavoritesAdapter extends ArrayAdapter<Restaurant> {
     private final int layoutResource;
     private List<Restaurant> nearbyRestaurants;
 
-    private static List<Restaurant> filteredRestaurants;
+    private List<Restaurant> filteredRestaurants;
 
     private Filter resFilter;
 
@@ -73,7 +73,7 @@ public class FavoritesAdapter extends ArrayAdapter<Restaurant> {
         return convertView;
     }
 
-    public static List<Restaurant> getFilteredRestaurants() {
+    public List<Restaurant> getFilteredRestaurants() {
         return filteredRestaurants;
     }
 

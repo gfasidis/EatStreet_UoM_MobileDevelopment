@@ -23,7 +23,7 @@ public class FavoritesActivity extends AppCompatActivity implements SearchView.O
 
     private static final String TAG = "iFasMan";
 
-    private FavoritesAdapter favoriteRestaurantAdapter;
+    private FavoritesAdapter favoritesAdapter;
     private ListView favoriteRestaurantsListView;
     private SearchView searchBarTextView;
     private ArrayList<Restaurant> favoriteRestaurants;
@@ -36,16 +36,26 @@ public class FavoritesActivity extends AppCompatActivity implements SearchView.O
         setTitle(getString(R.string.Fav_Res));
         setContentView(R.layout.activity_favorites);
 
-        favoriteRestaurantsListView = findViewById(R.id.favResListView);
         favoriteRestaurants = new ArrayList<>();
-        favoriteRestaurantAdapter = new FavoritesAdapter(FavoritesActivity.this, R.layout.nearby_list_item, favoriteRestaurants);
-        favoriteRestaurantsListView.setAdapter(favoriteRestaurantAdapter);
+        favoriteRestaurantsListView = findViewById(R.id.favResListView);
+        favoritesAdapter = new FavoritesAdapter(FavoritesActivity.this, R.layout.nearby_list_item, favoriteRestaurants);
+        favoriteRestaurantsListView.setAdapter(favoritesAdapter);
+        favoriteRestaurantsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent restaurantActivity = new Intent(FavoritesActivity.this, RestaurantActivity.class);
+
+                Restaurant selectedRestaurant = favoritesAdapter.getFilteredRestaurants().get(position);
+                restaurantActivity.putExtra(FavoritesActivity.this.getString(R.string.Passing_Restaurant),selectedRestaurant);
+
+                startActivity(restaurantActivity);
+            }
+        });
 
         userId = AccessToken.getCurrentAccessToken().getUserId();
         Log.d(TAG, "onCreate: userID = " + userId);
 
         getFavorites(userId);
-
     }
 
     private void getFavorites(String userId) {
@@ -82,7 +92,7 @@ public class FavoritesActivity extends AppCompatActivity implements SearchView.O
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        favoriteRestaurantAdapter.getFilter().filter(newText);
+        favoritesAdapter.getFilter().filter(newText);
         return false;
     }
 
@@ -97,18 +107,7 @@ public class FavoritesActivity extends AppCompatActivity implements SearchView.O
                 Log.d(TAG, favoriteRestaurants.get(i).toString());
                 Log.d(TAG, "----------------------------------------------------------------------------------");
             }
-
-            favoriteRestaurantAdapter.refreshRestaurants(favoriteRestaurants);
-            favoriteRestaurantsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent restaurantActivity = new Intent(FavoritesActivity.this, RestaurantActivity.class);
-                    restaurantActivity.putExtra("position",position);
-                    restaurantActivity.putExtra("activity","Favorites");
-                    startActivity(restaurantActivity);
-                }
-            });
-
+            favoritesAdapter.refreshRestaurants(favoriteRestaurants);
         }
 
         @Override
