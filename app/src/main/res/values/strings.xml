@@ -43,6 +43,7 @@
     <string name="title_activity_nearby_restaurant">NearbyRestaurantActivity</string>
     <string name="Res_info_btn">Restaurant Info</string>
     <string name="menu_btn">Restaurant Menu</string>
+    <string name="Empty_Nearby_List">There are no restaurants near you</string>
 
     <!--->
         Side menu tab Activity
@@ -69,6 +70,8 @@
     <string name="price">($)</string>
 
     <string name="Passing_Restaurant">Restaurant</string>
+
+    <string name="Empty_Favorites_List">You don\'t have any favorite restaurants</string>
 
 
 </resources>

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 
@@ -26,6 +27,9 @@ public class FavoritesActivity extends AppCompatActivity implements SearchView.O
     private FavoritesAdapter favoritesAdapter;
     private ListView favoriteRestaurantsListView;
     private SearchView searchBarTextView;
+
+    private TextView emptyFavoritesListTextView;
+
     private ArrayList<Restaurant> favoriteRestaurants;
 
     private String userId;
@@ -51,6 +55,8 @@ public class FavoritesActivity extends AppCompatActivity implements SearchView.O
                 startActivity(restaurantActivity);
             }
         });
+        emptyFavoritesListTextView = findViewById(R.id.emptyFavoritesList);
+        favoriteRestaurantsListView.setEmptyView(emptyFavoritesListTextView);
 
         userId = AccessToken.getCurrentAccessToken().getUserId();
         Log.d(TAG, "onCreate: userID = " + userId);

@@ -80,6 +80,8 @@ public class NearbyRestaurantActivity extends AppCompatActivity
     private ListView nearbyRestaurantsListView;
     private SearchView searchBarTextView;
 
+    private TextView emptyNearbyListTextView;
+
     private TextView usersProfileNameTextView;
     private TextView usersProfileIdTextView;
     private ImageView usersImageView;
@@ -126,6 +128,8 @@ public class NearbyRestaurantActivity extends AppCompatActivity
                 startActivity(restaurantActivity);
             }
         });
+        emptyNearbyListTextView = findViewById(R.id.emptyNearbyList);
+        nearbyRestaurantsListView.setEmptyView(emptyNearbyListTextView);
 
         compileLayout();
     }
