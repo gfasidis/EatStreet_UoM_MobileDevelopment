@@ -30,9 +30,15 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
+        android:id="@+id/usersProfileEmailTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/FB_Profile_Email" />
+
+    <TextView
         android:id="@+id/usersProfileIdTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/FB_Profile_id" />
+        android:text="@string/FB_Profile_ID" />
 
 </LinearLayout>

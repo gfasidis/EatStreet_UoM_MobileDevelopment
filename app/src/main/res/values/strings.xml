@@ -59,7 +59,8 @@
 
     <string name="FB_Profile_Photo">User\'s FaceBook Profile Photo</string>
     <string name="FB_Profile_Name">User\'s FaceBook Profile Name</string>
-    <string name="FB_Profile_id">User\'s FaceBook Profile iD</string>
+    <string name="FB_Profile_ID">User\'s FaceBook Profile iD</string>
+    <string name="FB_Profile_Email">User\'s FaceBook Profile Email</string>
 
     <!--->
         Restaurant Menu List

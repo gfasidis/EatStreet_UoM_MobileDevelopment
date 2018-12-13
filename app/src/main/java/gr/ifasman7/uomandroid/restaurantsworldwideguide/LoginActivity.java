@@ -16,6 +16,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
 
@@ -27,9 +28,11 @@ public class LoginActivity extends AppCompatActivity {
        Facebook Login Objects // Start
     */
     private CallbackManager callbackManager;
-    private Button continueFBbtn;
+    private Button continueFaceBookBtn;
     private boolean isLoggedIn;
-    private TextView welcBacktxt;
+    private TextView welcomeBackTextView;
+    private LoginButton loginButton;
+
     /*
        Facebook Login Objects // End
     */
@@ -39,35 +42,24 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /*
-            Facebook Login Objects // Start
-         */
-        callbackManager = CallbackManager.Factory.create();
-        /*
-            Facebook Login Objects // End
-         */
-
         setContentView(R.layout.activity_login);
 
         /*
             Facebook Login Objects // Start
          */
+        callbackManager = CallbackManager.Factory.create();
 
-        Log.d(TAG, "onCreate: test");
-
-        welcBacktxt = findViewById(R.id.welcBacktxt);
-        continueFBbtn = findViewById(R.id.loggedINbtn);
+        welcomeBackTextView = findViewById(R.id.welcBacktxt);
+        continueFaceBookBtn = findViewById(R.id.loggedINbtn);
 
         AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
             @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken,
-                                                       AccessToken currentAccessToken) {
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
                 if (currentAccessToken == null) {
                     LoginManager.getInstance().logOut();
-                    Log.d(TAG, "onLogout catched");
-                    continueFBbtn.setVisibility(View.INVISIBLE);
-                    welcBacktxt.setVisibility(View.INVISIBLE);
+                    Log.d(TAG, "onCurrentAccessTokenChanged: onLogout catched");
+                    continueFaceBookBtn.setVisibility(View.INVISIBLE);
+                    welcomeBackTextView.setVisibility(View.INVISIBLE);
                     loginAttempt();
                 }
             }
@@ -81,9 +73,6 @@ public class LoginActivity extends AppCompatActivity {
         infoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Log.d(TAG, "onClick: LoginActivity: Info Button: Just click my info button");
-
                 Intent infoActivity = new Intent(LoginActivity.this, InfoActivity.class);
                 startActivity(infoActivity);
 
@@ -91,16 +80,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Log.d(TAG, "onCreate: test2");
-
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -111,35 +97,35 @@ public class LoginActivity extends AppCompatActivity {
     private void loginAttempt(){
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         isLoggedIn = accessToken != null && !accessToken.isExpired();
+        
         if (!isLoggedIn){
-            LoginManager.getInstance().registerCallback(callbackManager,
-                    new FacebookCallback<LoginResult>() {
-                        @Override
-                        public void onSuccess(LoginResult loginResult) {
-                            Log.d(TAG, "onSuccess: " + loginResult.getAccessToken());
-                            Intent nearbyRestaurantActivity = new Intent(LoginActivity.this, NearbyRestaurantActivity.class);
-                            startActivity(nearbyRestaurantActivity);
+            loginButton = findViewById(R.id.login_button);
+            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    Log.d(TAG, "onSuccess: " + loginResult.getAccessToken());
+                    Intent nearbyRestaurantActivity = new Intent(LoginActivity.this, NearbyRestaurantActivity.class);
+                    startActivity(nearbyRestaurantActivity);
+                }
 
-                        }
+                @Override
+                public void onCancel() {
+                    Log.d(TAG, "onCancel: ");
 
-                        @Override
-                        public void onCancel() {
-                            Log.d(TAG, "onCancel: ");
-                        }
+                }
 
-                        @Override
-                        public void onError(FacebookException exception) {
-                            Log.e(TAG, "onError: Login",exception );
-                        }
-                    });
-
+                @Override
+                public void onError(FacebookException error) {
+                    Log.e(TAG, "onError: Login",error );
+                }
+            });
         }else {
-            welcBacktxt.setVisibility(View.VISIBLE);
-            continueFBbtn.setVisibility(View.VISIBLE);
-            continueFBbtn.setOnClickListener(new View.OnClickListener() {
+            welcomeBackTextView.setVisibility(View.VISIBLE);
+            continueFaceBookBtn.setVisibility(View.VISIBLE);
+            continueFaceBookBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "email", "id"));
+                    LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile"));
                     Intent nearbyRestaurantActivity = new Intent(LoginActivity.this, NearbyRestaurantActivity.class);
                     startActivity(nearbyRestaurantActivity);
 

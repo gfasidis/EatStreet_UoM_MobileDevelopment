@@ -71,23 +71,28 @@ public class NearbyRestaurantActivity extends AppCompatActivity
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private Location currentLocation;
-
     private LocationCallback mLocationCallback;
 
-    private RestaurantAdapter restaurantAdapter;
+
     private static ArrayList<Restaurant> restaurants;
+    private RestaurantAdapter restaurantAdapter;
 
     private ListView nearbyRestaurantsListView;
-    private SearchView searchBarTextView;
-
     private TextView emptyNearbyListTextView;
 
+    private SearchView searchBarTextView;
+
+    /*
+        FaceBook Data
+     */
     private TextView usersProfileNameTextView;
     private TextView usersProfileIdTextView;
+    private TextView usersProfileEmailTextView;
     private ImageView usersImageView;
 
     private String userName;
     private String userID;
+    private String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,24 +212,20 @@ public class NearbyRestaurantActivity extends AppCompatActivity
     }
     private void logoutAction(){
         disconnectFromFacebook();
+
         Log.d(TAG, "onNavigationItemSelected: Logout Action: Logout Done");
         Toast.makeText(NearbyRestaurantActivity.this, "Log out Successfully",Toast.LENGTH_SHORT).show();
 
         Intent backToLoginActivity = new Intent(NearbyRestaurantActivity.this,LoginActivity.class);
         startActivity(backToLoginActivity);
     }
-    private void supportAction(){
-        Intent emailActivity = new Intent(Intent.ACTION_SENDTO);
-        emailActivity.setData(Uri.parse(Uri.parse("mailto:" + NearbyRestaurantActivity.this.getString(R.string.support_email))
-                + "?subject=" + "Feedback: " + "&body=" + ""));
-        startActivity(emailActivity);
-    }
+
     private void disconnectFromFacebook() {
         AccessToken currentAccessToken = AccessToken.getCurrentAccessToken();
         if (currentAccessToken == null) {
             return; // already logged out
         }
-        
+
         new GraphRequest(currentAccessToken, "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest.Callback() {
             @Override
             public void onCompleted(GraphResponse graphResponse) {
@@ -232,14 +233,19 @@ public class NearbyRestaurantActivity extends AppCompatActivity
             }
         }).executeAsync();
     }
+
+
+    private void supportAction(){
+        Intent emailActivity = new Intent(Intent.ACTION_SENDTO);
+        emailActivity.setData(Uri.parse(Uri.parse("mailto:" + NearbyRestaurantActivity.this.getString(R.string.support_email))
+                + "?subject=" + "Feedback: " + "&body=" + ""));
+        startActivity(emailActivity);
+    }
+
     /*
         Menu Actions // END
      */
 
-
-     /*
-        Don't change ANYTHING!!!!!
-     */
 
     /*
        When Location change // START
@@ -401,7 +407,7 @@ public class NearbyRestaurantActivity extends AppCompatActivity
                                 downloadDataViaLocation(currentLocation);
                             } else {
                                 /*
-                                    Fused Location Provider Only Works AFTER maps or something like that open previously
+                                    Fused Location Provider Only Works AFTER maps or something like that has opened previously
                                     Added this to avoid crashing with null pointer exception in AVD
                                  */
                                 Log.d(TAG, "onComplete: current location = null");
@@ -529,8 +535,10 @@ public class NearbyRestaurantActivity extends AppCompatActivity
 
         @Override
         protected Object doInBackground(Object[] objects) {
-            final String USERS_NAME = "name";
-            final String USERS_ID = "id";
+            final String USER_NAME = "name";
+            final String USER_ID = "id";
+            final String USER_PICTURE = "picture";
+            final String USER_EMAIL = "email";
 
             final AccessToken accessToken = AccessToken.getCurrentAccessToken();
             GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
@@ -538,16 +546,25 @@ public class NearbyRestaurantActivity extends AppCompatActivity
                 public void onCompleted(JSONObject object, GraphResponse response) {
                     Log.d(TAG, "onCompleted: getUserFaceBookData" + response.toString());
                     try {
-                        userName = object.getString(USERS_NAME);
-                        userID = object.getString(USERS_ID);
-
+                        //User's Name
+                        userName = object.getString(USER_NAME);
                         usersProfileNameTextView = findViewById(R.id.usersProfileNameTextView);
                         usersProfileNameTextView.setText(userName);
 
+                        //User's ID
                         usersProfileIdTextView = findViewById(R.id.usersProfileIdTextView);
                         usersProfileIdTextView.setText(userID);
+                        userID = object.getString(USER_ID);
 
-                        String imageURL = "https://graph.facebook.com/" + userID + "/picture?type=large";
+                        //User's Email
+                        if(object.has(USER_EMAIL)) {
+                            userEmail = object.getString(USER_EMAIL);
+                            usersProfileEmailTextView = findViewById(R.id.usersProfileEmailTextView);
+                            usersProfileEmailTextView.setText(userEmail);
+                        }
+
+                        //User's Profile Picture
+                        String imageURL = object.getJSONObject(USER_PICTURE).getJSONObject("data").getString("url");
                         usersImageView = findViewById(R.id.usersImageView);
                         Picasso.get().load(imageURL).resize(120,120).transform(new CirlceTransformation()).into(usersImageView);
 
@@ -558,7 +575,7 @@ public class NearbyRestaurantActivity extends AppCompatActivity
                 }
             });
             Bundle parameters = new Bundle();
-            parameters.putString("fields", "id,name,link");
+            parameters.putString("fields", "id,name,picture.type(large),email");
             request.setParameters(parameters);
             request.executeAsync();
             return null;
