@@ -552,9 +552,9 @@ public class NearbyRestaurantActivity extends AppCompatActivity
                         usersProfileNameTextView.setText(userName);
 
                         //User's ID
+                        userID = object.getString(USER_ID);
                         usersProfileIdTextView = findViewById(R.id.usersProfileIdTextView);
                         usersProfileIdTextView.setText(userID);
-                        userID = object.getString(USER_ID);
 
                         //User's Email
                         if(object.has(USER_EMAIL)) {
