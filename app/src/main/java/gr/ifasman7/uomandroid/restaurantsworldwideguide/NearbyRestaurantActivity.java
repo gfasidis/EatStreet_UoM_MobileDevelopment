@@ -133,6 +133,9 @@ public class NearbyRestaurantActivity extends AppCompatActivity
                 startActivity(restaurantActivity);
             }
         });
+         /*
+            Show message when the list view is empty
+         */
         emptyNearbyListTextView = findViewById(R.id.emptyNearbyList);
         nearbyRestaurantsListView.setEmptyView(emptyNearbyListTextView);
 

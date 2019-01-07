@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +41,8 @@ public class FavoritesActivity extends AppCompatActivity implements SearchView.O
         setTitle(getString(R.string.Fav_Res));
         setContentView(R.layout.activity_favorites);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         favoriteRestaurants = new ArrayList<>();
         favoriteRestaurantsListView = findViewById(R.id.favResListView);
         favoritesAdapter = new FavoritesAdapter(FavoritesActivity.this, R.layout.nearby_list_item, favoriteRestaurants);
@@ -55,6 +58,9 @@ public class FavoritesActivity extends AppCompatActivity implements SearchView.O
                 startActivity(restaurantActivity);
             }
         });
+        /*
+            Show message when the list view is empty
+         */
         emptyFavoritesListTextView = findViewById(R.id.emptyFavoritesList);
         favoriteRestaurantsListView.setEmptyView(emptyFavoritesListTextView);
 
@@ -62,6 +68,17 @@ public class FavoritesActivity extends AppCompatActivity implements SearchView.O
         Log.d(TAG, "onCreate: userID = " + userId);
 
         getFavorites(userId);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getFavorites(String userId) {

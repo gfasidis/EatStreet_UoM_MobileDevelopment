@@ -48,12 +48,14 @@
         <activity
             android:name=".RestaurantActivity"
             android:theme="@style/RestaurantTheme" />
-        <activity android:name=".InfoActivity" />
+        <activity android:name=".InfoActivity"
+            android:parentActivityName=".LoginActivity"/>
         <activity
             android:name=".NearbyRestaurantActivity"
             android:label="@string/title_activity_nearby_restaurant"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".FavoritesActivity"></activity>
+        <activity android:name=".FavoritesActivity"
+            android:parentActivityName=".NearbyRestaurantActivity"/>
     </application>
 
 </manifest>
