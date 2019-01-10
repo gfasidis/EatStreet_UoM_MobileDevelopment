@@ -18,6 +18,8 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import java.util.Arrays;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -124,6 +126,7 @@ public class LoginActivity extends AppCompatActivity {
             continueFaceBookBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "email"));
                     Intent nearbyRestaurantActivity = new Intent(LoginActivity.this, NearbyRestaurantActivity.class);
                     startActivity(nearbyRestaurantActivity);
 
