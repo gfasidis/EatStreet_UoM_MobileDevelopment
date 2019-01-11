@@ -76,8 +76,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent infoActivity = new Intent(LoginActivity.this, InfoActivity.class);
                 startActivity(infoActivity);
-
-
             }
         });
 
