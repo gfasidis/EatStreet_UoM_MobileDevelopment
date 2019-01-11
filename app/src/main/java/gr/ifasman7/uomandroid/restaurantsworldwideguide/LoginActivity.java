@@ -101,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         
         if (!isLoggedIn){
             loginButton = findViewById(R.id.login_button);
+            loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
             loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                 @Override
                 public void onSuccess(LoginResult loginResult) {
@@ -126,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
             continueFaceBookBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "email"));
+                    LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("email", "public_profile"));
                     Intent nearbyRestaurantActivity = new Intent(LoginActivity.this, NearbyRestaurantActivity.class);
                     startActivity(nearbyRestaurantActivity);
 

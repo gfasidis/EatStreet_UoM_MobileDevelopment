@@ -559,6 +559,10 @@ public class NearbyRestaurantActivity extends AppCompatActivity
                             usersProfileEmailTextView = findViewById(R.id.usersProfileEmailTextView);
                             usersProfileEmailTextView.setText(userEmail);
                         }
+                        else {
+                            usersProfileEmailTextView = findViewById(R.id.usersProfileEmailTextView);
+                            usersProfileEmailTextView.setVisibility(View.GONE);
+                        }
 
                         //User's Profile Picture
                         String imageURL = object.getJSONObject(USER_PICTURE).getJSONObject("data").getString("url");
