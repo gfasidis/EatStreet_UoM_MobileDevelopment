@@ -100,9 +100,6 @@ public class NearbyRestaurantActivity extends AppCompatActivity
         setTitle(R.string.nearby_res);
         setContentView(R.layout.activity_nearby_restaurant);
 
-        /*
-            Don't Change Anything // Start
-         */
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -114,9 +111,6 @@ public class NearbyRestaurantActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        /*
-            Don't Change Anything // End
-         */
 
         restaurants = new ArrayList<>();
         nearbyRestaurantsListView = findViewById(R.id.nearbyResListView);
