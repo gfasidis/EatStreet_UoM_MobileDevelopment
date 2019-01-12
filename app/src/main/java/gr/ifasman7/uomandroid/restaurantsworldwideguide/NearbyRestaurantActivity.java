@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
@@ -63,22 +64,26 @@ public class NearbyRestaurantActivity extends AppCompatActivity
 
     private static final String API_KEY = BuildConfig.ApiKey;
 
+    /*
+        Location
+     */
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private LocationRequest mLocationRequest;
+    private LocationCallback mLocationCallback;
+    private Location currentLocation;
+
     private Boolean mLocationPermissionsGranted = false;
-    private Boolean mRequestingLocationUpdates = true;
+
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
-    private Location currentLocation;
-    private LocationCallback mLocationCallback;
-
 
     private static ArrayList<Restaurant> restaurants;
     private RestaurantAdapter restaurantAdapter;
 
     private ListView nearbyRestaurantsListView;
     private TextView emptyNearbyListTextView;
+    private SwipeRefreshLayout swipeRefreshRestaurants;
 
     private SearchView searchBarTextView;
 
@@ -99,6 +104,12 @@ public class NearbyRestaurantActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setTitle(R.string.nearby_res);
         setContentView(R.layout.activity_nearby_restaurant);
+
+        compileLayout();
+        compileDataAndLocation();
+    }
+
+    private void compileLayout() {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -133,14 +144,24 @@ public class NearbyRestaurantActivity extends AppCompatActivity
         emptyNearbyListTextView = findViewById(R.id.emptyNearbyList);
         nearbyRestaurantsListView.setEmptyView(emptyNearbyListTextView);
 
-        compileLayout();
+        /*
+            Adding SwipeRefreshLayout
+         */
+        swipeRefreshRestaurants = findViewById(R.id.swipeRefreshRestaurants);
+        swipeRefreshRestaurants.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDeviceLocation();
+                if (swipeRefreshRestaurants.isRefreshing())
+                    swipeRefreshRestaurants.setRefreshing(false);
+            }
+        });
     }
 
-    private void compileLayout() {
-        Log.d(TAG, "compileLayout: Request Location Permission");
+    private void compileDataAndLocation(){
+        Log.d(TAG, "compileDataAndLocation: Request Location Permission");
         checkLocationPermission();
         if (mLocationPermissionsGranted) {
-            createLocationRequest();
             getDeviceLocation();
         } else {
             Toast.makeText(NearbyRestaurantActivity.this, "Unable to get restaurants!", Toast.LENGTH_SHORT).show();
@@ -177,6 +198,25 @@ public class NearbyRestaurantActivity extends AppCompatActivity
         return true;
     }
 
+    /*
+        Search Methods
+     */
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        restaurantAdapter.getFilter().filter(newText);
+        return false;
+    }
+
+
+    /*
+        Menu Actions // START
+     */
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -200,9 +240,6 @@ public class NearbyRestaurantActivity extends AppCompatActivity
         return true;
     }
 
-    /*
-        Menu Actions // START
-     */
     private void favListAction(){
         Intent favActivity = new Intent(NearbyRestaurantActivity.this, FavoritesActivity.class);
         startActivity(favActivity);
@@ -215,6 +252,13 @@ public class NearbyRestaurantActivity extends AppCompatActivity
 
         Intent backToLoginActivity = new Intent(NearbyRestaurantActivity.this,LoginActivity.class);
         startActivity(backToLoginActivity);
+    }
+
+    private void supportAction(){
+        Intent emailActivity = new Intent(Intent.ACTION_SENDTO);
+        emailActivity.setData(Uri.parse(Uri.parse("mailto:" + NearbyRestaurantActivity.this.getString(R.string.support_email))
+                + "?subject=" + "Feedback: " + "&body=" + ""));
+        startActivity(emailActivity);
     }
 
     private void disconnectFromFacebook() {
@@ -231,113 +275,25 @@ public class NearbyRestaurantActivity extends AppCompatActivity
         }).executeAsync();
     }
 
-
-    private void supportAction(){
-        Intent emailActivity = new Intent(Intent.ACTION_SENDTO);
-        emailActivity.setData(Uri.parse(Uri.parse("mailto:" + NearbyRestaurantActivity.this.getString(R.string.support_email))
-                + "?subject=" + "Feedback: " + "&body=" + ""));
-        startActivity(emailActivity);
-    }
-
     /*
         Menu Actions // END
      */
 
-
-    /*
-       When Location change // START
-    */
-    private void createLocationRequest(){
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(2000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
+        if (mLocationPermissionsGranted) {
+            getDeviceLocation();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
+        if (mLocationPermissionsGranted) {
+            getDeviceLocation();
         }
     }
-
-    private void startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            String[] permissions = {FINE_LOCATION, COARSE_LOCATION};
-            ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-
-        }
-
-        mLocationCallback = new LocationCallback(){
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-
-                Log.d(TAG, "onLocationResult: Checking");
-                if(locationChanged(locationResult)){
-                    /*
-                        Simulate walking! While walking location changed
-                     */
-                    for (Location location : locationResult.getLocations()) {
-                        Log.d(TAG, "onLocationResult: " + location.toString());
-                        currentLocation = location;
-                        downloadDataViaLocation(currentLocation);
-                    }
-
-                }
-                else{
-                    Log.d(TAG, "onLocationResult: Nothing changed");
-                    return;
-                }
-            }
-        };
-
-        Log.d(TAG, "startLocationUpdates: Location request");
-        mFusedLocationProviderClient = new FusedLocationProviderClient(NearbyRestaurantActivity.this);
-        mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback,null);
-    }
-
-    private Boolean locationChanged(LocationResult locationResult){
-
-        Log.d(TAG, "locationChanged: " + locationResult.getLastLocation().getLongitude() + ", " + locationResult.getLastLocation().getLatitude());
-        if(locationResult.getLastLocation().getLatitude() == currentLocation.getLatitude()){
-            if(locationResult.getLastLocation().getLongitude() == currentLocation.getLongitude()){
-                Log.d(TAG, "locationChanged: false");
-                return false;
-            }
-            else {
-                Log.d(TAG, "locationChanged: true");
-                return true;
-            }
-        }
-        else{
-            Log.d(TAG, "locationChanged: true");
-            return true;
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        stopLocationUpdates();
-    }
-
-    private void stopLocationUpdates() {
-        mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
-    }
-    /*
-        When Location change // END
-     */
 
     private void checkLocationPermission(){
         Log.d(TAG, "checkLocationPermission: getting location permissions");
@@ -374,12 +330,8 @@ public class NearbyRestaurantActivity extends AppCompatActivity
                             return;
                         }
                     }
-
                     Log.d(TAG, "onRequestPermissionsResult: permission granted");
                     mLocationPermissionsGranted = true;
-
-                    createLocationRequest();
-                    startLocationUpdates();
                     getDeviceLocation();
                 }
             }
@@ -387,8 +339,9 @@ public class NearbyRestaurantActivity extends AppCompatActivity
     }
 
     private void getDeviceLocation(){
-        Log.d(TAG, "getDeviceLocation: getting the devices current location");
+        startLocationUpdates();
 
+        Log.d(TAG, "getDeviceLocation: getting the devices current location");
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try{
             if(mLocationPermissionsGranted){
@@ -401,6 +354,7 @@ public class NearbyRestaurantActivity extends AppCompatActivity
                             currentLocation = (Location) task.getResult();
                             if (currentLocation != null) {
                                 Log.d(TAG, "onComplete: current location != null");
+                                Log.d(TAG, "onComplete: location = " + currentLocation.toString());
                                 downloadDataViaLocation(currentLocation);
                             } else {
                                 /*
@@ -414,7 +368,6 @@ public class NearbyRestaurantActivity extends AppCompatActivity
                                 currentLocation = defaultLocation;
                                 downloadDataViaLocation(currentLocation);
                             }
-
                         } else {
                             Log.d(TAG, "onComplete: Current location is null");
                             Toast.makeText(NearbyRestaurantActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
@@ -425,12 +378,68 @@ public class NearbyRestaurantActivity extends AppCompatActivity
         }catch (SecurityException e){
             Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage() );
         }
+        stopLocationUpdates();
     }
+
+    /*
+       When Location change
+    */
+
+    private void createLocationRequest(){
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(100);
+        mLocationRequest.setFastestInterval(100);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    private void startLocationUpdates() {
+        createLocationRequest();
+        if (ActivityCompat.checkSelfPermission(this, FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            String[] permissions = {FINE_LOCATION, COARSE_LOCATION};
+            ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
+        }
+        mLocationCallback = new LocationCallback(){
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                Log.d(TAG, "onLocationResult: Checking");
+                float[] distance = new float[1];
+
+                Location.distanceBetween(locationResult.getLastLocation().getLatitude(),
+                        locationResult.getLastLocation().getLongitude(), currentLocation.getLatitude(),
+                        currentLocation.getLongitude(), distance);
+                Log.d(TAG, "onLocationResult: distance = " + distance[0]);
+
+                if(distance[0] > 30.0 ){
+                    currentLocation = locationResult.getLastLocation();
+                    Log.d(TAG, "onLocationResult: " + currentLocation.toString());
+                    downloadDataViaLocation(currentLocation);
+                }
+                else{
+                    Log.d(TAG, "onLocationResult: Nothing changed");
+                    return;
+                }
+            }
+        };
+        Log.d(TAG, "startLocationUpdates: Location request");
+        mFusedLocationProviderClient = new FusedLocationProviderClient(NearbyRestaurantActivity.this);
+        mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback,null);
+    }
+
+    private void stopLocationUpdates() {
+        Log.d(TAG, "stopLocationUpdates: Stop Location Updates");
+        if (mFusedLocationProviderClient != null)
+            mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
+        mLocationRequest = null;
+        mLocationCallback = null;
+        mFusedLocationProviderClient = null;
+    }
+
 
     /*
         Calling AsyncTask classes
      */
-
     private void downloadDataViaLocation(Location location){
         Log.d(TAG, "downloadDataViaLocation: starting an async Task....");
         DownloadNearbyRestaurantsData downloadNearbyRestaurantsData = new DownloadNearbyRestaurantsData();
@@ -444,27 +453,11 @@ public class NearbyRestaurantActivity extends AppCompatActivity
         downloadObject.execute();
     }
 
-
-    /*
-        Search Methods
-     */
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        restaurantAdapter.getFilter().filter(newText);
-        return false;
-    }
-
     /*
         JSON Data, AsyncTask classes
      */
 
     private class DownloadNearbyRestaurantsData extends AsyncTask<String, Void, String> {
-
 
         @Override
         protected void onPostExecute(String jsonData) {
@@ -583,3 +576,4 @@ public class NearbyRestaurantActivity extends AppCompatActivity
         }
     }
 }
+
