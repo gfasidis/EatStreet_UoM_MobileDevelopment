@@ -341,7 +341,7 @@ public class NearbyRestaurantActivity extends AppCompatActivity
     private void getDeviceLocation(){
         startLocationUpdates();
 
-        Log.d(TAG, "getDeviceLocation: getting the devices current location");
+        Log.d(TAG, "getDeviceLocation: getting the devices current location!");
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try{
             if(mLocationPermissionsGranted){
